@@ -208,7 +208,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaDatabase, FaFileUpload, FaPlus, FaDownload, FaCog } from 'react-icons/fa';
 
-const url = "https://meridian-chabot-dashboard.onrender.com";
+const url = "https://meridian-chatbot-backend-prompts.onrender.com";
 
 const Dashboard = () => {
   // State for document count
