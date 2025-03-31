@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './settings.css'
 
-const url = "https://meridian-chatbot-backend-prompts.onrender.com";
+const url = "https://meridian-chabot-dashboard.onrender.com";
 
 const Settings = () => {
   // State management
