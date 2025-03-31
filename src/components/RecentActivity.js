@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const url = "https://meridian-chatbot-backend-prompts.onrender.com";
+const url = "https://meridian-chabot-dashboard.onrender.com";
 
 const RecentActivity = () => {
   const [queries, setQueries] = useState([]);
