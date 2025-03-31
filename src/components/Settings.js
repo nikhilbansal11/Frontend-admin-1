@@ -116,8 +116,9 @@ const Settings = () => {
   };
 
   const handleCreate = () => {
+    let len = prompts.length;
     setCurrentPrompt({
-      id: 0,
+      id: len + 1,
       domain_name: '',
       system_prompt: '',
       format_template: '',

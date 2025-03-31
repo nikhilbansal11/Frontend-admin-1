@@ -133,20 +133,51 @@ const KnowledgeBasePage = () => {
   };
 
   // Handle file deletion by document ID
+  // const handleDeleteFile = async (docId) => {
+  //   if (!window.confirm('Are you sure you want to delete this file?')) {
+  //     return;
+  //   }
+  //   setIsDeleting(true);
+  //   try {
+  //     const response = await fetch(`${baseUrl}/admin/delete-by-doc-id`, {
+  //       method: 'DELETE',
+  //       mode: 'cors',
+  //       credentials: 'include',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ doc_id: docId })
+  //     });
+  
+  //     if (response.ok) {
+  //       fetchFiles();
+  //     } else {
+  //       try {
+  //         const errorResult = await response.json();
+  //         setError(errorResult.detail || 'File deletion failed');
+  //       } catch {
+  //         const errorText = await response.text();
+  //         setError(errorText || 'File deletion failed');
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('File deletion error:', error);
+  //     setError('An error occurred during file deletion');
+  //   } finally {
+  //     setIsDeleting(false);
+  //   }
+  // };
   const handleDeleteFile = async (docId) => {
     if (!window.confirm('Are you sure you want to delete this file?')) {
       return;
     }
     setIsDeleting(true);
     try {
-      const response = await fetch(`${baseUrl}/admin/delete-by-doc-id`, {
+      // Append doc_id as a query parameter instead of sending it in the body
+      const response = await fetch(`${baseUrl}/admin/delete-by-doc-id?doc_id=${docId}`, {
         method: 'DELETE',
         mode: 'cors',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ doc_id: docId })
       });
   
       if (response.ok) {
@@ -167,123 +198,233 @@ const KnowledgeBasePage = () => {
       setIsDeleting(false);
     }
   };
-
+  
   useEffect(() => {
     fetchFiles();
-  }, [fetchFiles]);
+  }, []);
+  
 
-  return (
-    <div className="knowledge-base-container">
-      <div className="knowledge-base-card">
-        <div className="knowledge-base-header">
-          <h2 className="knowledge-base-title" id='upload-btn'>Knowledge Base</h2>
-          <div className="button-group">
-            <input 
-              type="file" 
-              id="fileUpload" 
-              className="hidden" 
-              onChange={handleFileUpload}
-            />
-            <label 
-              htmlFor="fileUpload" 
-              className="button upload-file"
-            >
-              {isUploading ? <ClipLoader size={20} color="#fff" /> : <Upload className="icon" />}
-              Upload File
-            </label>
-            <input 
-              type="file" 
-              id="folderUpload" 
-              className="hidden" 
-              multiple
-              webkitdirectory="true" 
-              directory="true" 
-              onChange={handleFolderUpload}
-            />
-            <label 
-              htmlFor="folderUpload" 
-              className="button upload-folder"
-            >
-              {isUploading ? <ClipLoader size={20} color="#fff" /> : <Folder className="icon" />}
-              Upload Folder
-            </label>
-          </div>
+//   return (
+//     <div className="knowledge-base-container">
+//       <div className="knowledge-base-card">
+//         <div className="knowledge-base-header">
+//           <h2 className="knowledge-base-title" id='upload-btn'>Knowledge Base</h2>
+//           <div className="button-group">
+//             <input 
+//               type="file" 
+//               id="fileUpload" 
+//               className="hidden" 
+//               onChange={handleFileUpload}
+//             />
+//             <label 
+//               htmlFor="fileUpload" 
+//               className="button upload-file"
+//             >
+//               {isUploading ? <ClipLoader size={20} color="#fff" /> : <Upload className="icon" />}
+//               Upload File
+//             </label>
+//             <input 
+//               type="file" 
+//               id="folderUpload" 
+//               className="hidden" 
+//               multiple
+//               webkitdirectory="true" 
+//               directory="true" 
+//               onChange={handleFolderUpload}
+//             />
+//             <label 
+//               htmlFor="folderUpload" 
+//               className="button upload-folder"
+//             >
+//               {isUploading ? <ClipLoader size={20} color="#fff" /> : <Folder className="icon" />}
+//               Upload Folder
+//             </label>
+//           </div>
+//         </div>
+//         {error && (
+//           <div className="alert" role="alert">
+//             {error}
+//           </div>
+//         )}
+//         <table className="knowledge-base-table">
+//           <thead>
+//             <tr className="table-header">
+//               <th className="table-cell">#</th>
+//               <th className="table-cell">Name</th>
+//               <th className="table-cell">Type</th>
+//               <th className="table-cell">Size</th>
+//               <th className="table-cell">Status</th>
+//               <th className="table-cell">Actions</th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {isLoading ? (
+//               <tr>
+//                 <td colSpan="6" className="table-cell text-center">Loading files...</td>
+//               </tr>
+//             ) : files.length === 0 ? (
+//               <tr>
+//                 <td colSpan="6" className="table-cell text-center">No files found</td>
+//               </tr>
+//             ) : (
+//               files.map((file, index) => (
+//                 <tr key={file.id} className="table-row">
+//                   <td className="table-cell">{index + 1}</td>
+//                   <td className="table-cell">{file.name.split('/').pop()}</td>
+//                   <td className="table-cell">{file.type}</td>
+//                   <td className="table-cell">{file.size}</td>
+//                   <td className="table-cell">
+//                     <span className={`status ${getStatusColor(file.status)}`}>
+//                       {file.status}
+//                     </span>
+//                   </td>
+//                   <td className="table-cell">
+//                     <div className="actions">
+//                       <Tooltip content="Delete">
+//                         <button 
+//                           onClick={() => {
+//                             const docId = extractDocId(file.name);
+//                             if (docId) {
+//                               handleDeleteFile(docId);
+//                             } else {
+//                               setError('Invalid file format');
+//                             }
+//                           }}
+//                           className="action-button delete"
+//                           title="Delete"
+//                           disabled={isDeleting}
+//                         >
+//                           {isDeleting ? <ClipLoader size={20} color="#f00" /> : <Trash2 className="icon" />}
+//                         </button>
+//                       </Tooltip>
+//                       <Tooltip content="Refresh">
+//                         <button 
+//                           className="action-button refresh"
+//                           title="Refresh"
+//                           onClick={fetchFiles}
+//                         >
+//                           <RefreshCw className="icon" />
+//                         </button>
+//                       </Tooltip>
+//                     </div>
+//                   </td>
+//                 </tr>
+//               ))
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default KnowledgeBasePage;
+
+return (
+  <div className="knowledge-base-container">
+    <div className="knowledge-base-card">
+      <div className="knowledge-base-header">
+        <h2 className="knowledge-base-title" id='upload-btn'>Knowledge Base</h2>
+        <div className="button-group">
+          <input 
+            type="file" 
+            id="fileUpload" 
+            className="hidden" 
+            onChange={handleFileUpload}
+          />
+          <label 
+            htmlFor="fileUpload" 
+            className="button upload-file"
+          >
+            <Upload className="icon" /> Upload File
+          </label>
+          <input 
+            type="file" 
+            id="folderUpload" 
+            className="hidden" 
+            multiple
+            webkitdirectory="true" 
+            directory="true" 
+            onChange={handleFolderUpload}
+          />
+          <label 
+            htmlFor="folderUpload" 
+            className="button upload-folder"
+          >
+            <Folder className="icon" /> Upload Folder
+          </label>
         </div>
-        {error && (
-          <div className="alert" role="alert">
-            {error}
-          </div>
-        )}
-        <table className="knowledge-base-table">
-          <thead>
-            <tr className="table-header">
-              <th className="table-cell">#</th>
-              <th className="table-cell">Name</th>
-              <th className="table-cell">Type</th>
-              <th className="table-cell">Size</th>
-              <th className="table-cell">Status</th>
-              <th className="table-cell">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoading ? (
-              <tr>
-                <td colSpan="6" className="table-cell text-center">Loading files...</td>
-              </tr>
-            ) : files.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="table-cell text-center">No files found</td>
-              </tr>
-            ) : (
-              files.map((file, index) => (
-                <tr key={file.id} className="table-row">
-                  <td className="table-cell">{index + 1}</td>
-                  <td className="table-cell">{file.name.split('/').pop()}</td>
-                  <td className="table-cell">{file.type}</td>
-                  <td className="table-cell">{file.size}</td>
-                  <td className="table-cell">
-                    <span className={`status ${getStatusColor(file.status)}`}>
-                      {file.status}
-                    </span>
-                  </td>
-                  <td className="table-cell">
-                    <div className="actions">
-                      <Tooltip content="Delete">
-                        <button 
-                          onClick={() => {
-                            const docId = extractDocId(file.name);
-                            if (docId) {
-                              handleDeleteFile(docId);
-                            } else {
-                              setError('Invalid file format');
-                            }
-                          }}
-                          className="action-button delete"
-                          title="Delete"
-                          disabled={isDeleting}
-                        >
-                          {isDeleting ? <ClipLoader size={20} color="#f00" /> : <Trash2 className="icon" />}
-                        </button>
-                      </Tooltip>
-                      <Tooltip content="Refresh">
-                        <button 
-                          className="action-button refresh"
-                          title="Refresh"
-                          onClick={fetchFiles}
-                        >
-                          <RefreshCw className="icon" />
-                        </button>
-                      </Tooltip>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
       </div>
+      {error && (
+  <div className="alert" role="alert">
+    {typeof error === 'object' ? JSON.stringify(error) : error}
+  </div>
+)}
+      <table className="knowledge-base-table">
+        <thead>
+          <tr className="table-header">
+            <th className="table-cell">#</th>
+            <th className="table-cell">Name</th>
+            <th className="table-cell">Type</th>
+            <th className="table-cell">Size</th>
+            <th className="table-cell">Status</th>
+            <th className="table-cell">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {isLoading ? (
+            <tr>
+              <td colSpan="6" className="table-cell text-center">Loading files...</td>
+            </tr>
+          ) : files.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="table-cell text-center">No files found</td>
+            </tr>
+          ) : (
+            files.map((file, index) => (
+              <tr key={file.id} className="table-row">
+                <td className="table-cell">{index + 1}</td>
+                <td className="table-cell">{file.name.split('/').pop()}</td>
+                <td className="table-cell">{file.type}</td>
+                <td className="table-cell">{file.size}</td>
+                <td className="table-cell">
+                  <span className={`status ${getStatusColor(file.status)}`}>
+                    {file.status}
+                  </span>
+                </td>
+                <td className="table-cell">
+                  <div className="actions">
+                    <button 
+                      onClick={() => {
+                        const docId = extractDocId(file.name);
+                        if (docId) {
+                          handleDeleteFile(docId);
+                        } else {
+                          setError('Invalid file format');
+                        }
+                      }}
+                      className="action-button delete"
+                      title="Delete"
+                    >
+                      <Trash2 className="icon" />
+                    </button>
+                    <button 
+                      className="text-blue-500 hover:text-blue-700"
+                      title="Refresh"
+                      onClick={fetchFiles}
+                    >
+                      <RefreshCw className="icon" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
-  );
+  </div>
+);
 };
 
 export default KnowledgeBasePage;

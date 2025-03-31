@@ -5,6 +5,7 @@ import Dashboard from "./components/Dashboard";
 import KnowledgeBase from "./components/KnowledgeBase";
 import Settings from "./components/Settings";
 import "./App.css";
+import RecentActivity from "./components/RecentActivity";
 
 // Sidebar Component
 const Sidebar = () => {
@@ -34,6 +35,11 @@ const Sidebar = () => {
           <FaCog className="nav-icon" /> 
           <span>Settings</span>
         </NavLink>
+        <NavLink to="/recentActivity" className={({ isActive }) => (isActive ? "nav-item active" : "nav-item")}>
+          <FaUser className="nav-icon" /> 
+          <span>Recent Activity</span>
+        </NavLink>
+
       </nav>
       
       <div className="user-profile">
@@ -57,15 +63,19 @@ const App = () => {
   const [fileCount, setFileCount] = useState(0);
   const [folderCount, setFolderCount] = useState(0);
 
+
+ 
+
   return (
     <Router>
       <div className="app-container">
         <Sidebar />
         <div className="main-content">
           <Routes>
-            {/* <Route path="/" element={<Dashboard fileCount={fileCount} folderCount={folderCount} />} /> */}
+            <Route path="/" element={<Dashboard fileCount={fileCount} folderCount={folderCount} />} />
             <Route path="/knowledge" element={<KnowledgeBase setFileCount={setFileCount} />} />
             <Route path="/settings" element={<Settings />} />
+            <Route path="/recentActivity" element={<RecentActivity />} />
           </Routes>
         </div>
       </div>
