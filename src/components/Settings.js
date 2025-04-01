@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './settings.css'
 
-const url = "https://meridian-chabot-dashboard.onrender.com";
+const url = "https://meridian-backend-postdeployment-testing.onrender.com";
 
 const Settings = () => {
   // State management
@@ -22,7 +22,8 @@ const Settings = () => {
     system_prompt: '',
     format_template: '',
     temperature: 0.7,
-    max_tokens: 1000
+    max_tokens: 1000,
+    default: false
   });
 
   // Fetch all prompts on component mount
@@ -82,7 +83,8 @@ const Settings = () => {
         system_prompt: '',
         format_template: '',
         temperature: 0.7,
-        max_tokens: 1000
+        max_tokens: 1000,
+        default: false
       });
       fetchPrompts();
     } catch (err) {
@@ -123,7 +125,8 @@ const Settings = () => {
       system_prompt: '',
       format_template: '',
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 1000,
+      default: false,
     });
     setIsCreating(true);
     setIsEditing(false);
@@ -139,26 +142,47 @@ const Settings = () => {
       system_prompt: '',
       format_template: '',
       temperature: 0.7,
-      max_tokens: 1000
+      max_tokens: 1000,
+      default: false,
     });
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, type, value, checked }  = e.target;
     
     // Handle numeric values
-    if (name === 'temperature' || name === 'max_tokens') {
-      setCurrentPrompt({
-        ...currentPrompt,
-        [name]: parseFloat(value)
-      });
-    } else {
-      setCurrentPrompt({
-        ...currentPrompt,
-        [name]: value
-      });
-    }
-  };
+  //   if (name === 'temperature' || name === 'max_tokens') {
+  //     setCurrentPrompt({
+  //       ...currentPrompt,
+  //       [name]: parseFloat(value)
+  //     });
+  //   } else {
+  //     setCurrentPrompt({
+  //       ...currentPrompt,
+  //       [name]: value
+  //     });
+  //   }
+  // };
+
+  if (type === 'checkbox') {
+    setCurrentPrompt({
+      ...currentPrompt,
+      [name]: checked
+    });
+  } 
+  // Handle numeric values
+  else if (name === 'temperature' || name === 'max_tokens') {
+    setCurrentPrompt({
+      ...currentPrompt,
+      [name]: parseFloat(value)
+    });
+  } else {
+    setCurrentPrompt({
+      ...currentPrompt,
+      [name]: value
+    });
+  }
+};
 
   // Render form component
   const renderForm = () => (
@@ -212,6 +236,18 @@ const Settings = () => {
             onChange={handleChange} 
             className="form-textarea" 
           />
+        </div>
+
+        <div className="form-group">
+          <label className="form-label">
+            <input 
+              type="checkbox" 
+              name="default" 
+              checked={currentPrompt.default} 
+              onChange={handleChange} 
+            />
+            {' '}Default Prompt
+          </label>
         </div>
         
         <div className="form-grid">
@@ -321,6 +357,7 @@ const Settings = () => {
                 <th className="table-cell">ID</th>
                 <th className="table-cell">Domain</th>
                 <th className="table-cell">System Prompt</th>
+                <th className="table-cell">Default</th>
                 <th className="table-cell">Temperature</th>
                 <th className="table-cell">Max Tokens</th>
                 <th className="table-cell">Actions</th>
@@ -337,6 +374,7 @@ const Settings = () => {
                       {prompt.system_prompt.length > 100 ? '...' : ''}
                     </div>
                   </td>
+                  <td className="table-cell">{prompt.default ? 'Yes' : 'No'}</td>
                   <td className="table-cell">{prompt.temperature}</td>
                   <td className="table-cell">{prompt.max_tokens}</td>
                   <td className="table-cell">
