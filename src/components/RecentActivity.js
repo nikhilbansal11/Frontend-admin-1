@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const url = "https://meridian-chabot-dashboard.onrender.com";
+const url = "https://meridian-backend-postdeployment-testing.onrender.com";
 
 const RecentActivity = () => {
   const [queries, setQueries] = useState([]);
@@ -16,7 +16,8 @@ const RecentActivity = () => {
         return response.json();
       })
       .then(data => {
-        setQueries(data);
+        const sortedData = data.sort((a, b) => (b.id || 0) - (a.id || 0));
+        setQueries(sortedData);
         setLoading(false);
       })
       .catch(err => {
