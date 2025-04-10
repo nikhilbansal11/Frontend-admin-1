@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './settings.css'
 
-const url = "https://meridian-backend-postdeployment-testing.onrender.com";
+// const url = "https://meridian-backend-postdeployment-testing.onrender.com";
+const url = "https://adminguidedchatbot22-a7bdayd7a8bkcpca.eastus2-01.azurewebsites.net";
 
 const Settings = () => {
   // State management
