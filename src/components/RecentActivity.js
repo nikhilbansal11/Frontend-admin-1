@@ -60,29 +60,28 @@ const RecentActivity = () => {
       marginBottom: '10px'
     },
     input: {
-    padding: '10px 15px',
-    marginRight: '10px',
-    marginBottom: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    width: '280px',
-    fontSize: '16px',
-    outline: 'none',
-    transition: 'all 0.3s ease',
-    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-  },
-      searchButton: {
-  padding: '10px 18px',
-  backgroundColor: '#007BFF',
-  color: 'white',
-  border: 'none',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  fontSize: '16px',
-  transition: 'background-color 0.3s ease',
-  boxShadow: '0 2px 5px rgba(0, 123, 255, 0.3)'
-},
-
+      padding: '10px 15px',
+      marginRight: '10px',
+      marginBottom: '20px',
+      border: '1px solid #ccc',
+      borderRadius: '8px',
+      width: '280px',
+      fontSize: '16px',
+      outline: 'none',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+    },
+    searchButton: {
+      padding: '10px 18px',
+      backgroundColor: '#007BFF',
+      color: 'white',
+      border: 'none',
+      borderRadius: '8px',
+      cursor: 'pointer',
+      fontSize: '16px',
+      transition: 'background-color 0.3s ease',
+      boxShadow: '0 2px 5px rgba(0, 123, 255, 0.3)'
+    },
     table: {
       width: '100%',
       borderCollapse: 'collapse'
@@ -109,15 +108,15 @@ const RecentActivity = () => {
         <div style={styles.title}>Recent Activity - All Queries</div>
 
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-        <input
-          type="text"
-          placeholder="Search by domain..."
-          value={searchDomain}
-          onChange={handleSearchChange}
-          style={styles.input}
-        />
-        <button style={styles.searchButton}>Search</button>
-      </div>
+          <input
+            type="text"
+            placeholder="Search by domain..."
+            value={searchDomain}
+            onChange={handleSearchChange}
+            style={styles.input}
+          />
+          <button style={styles.searchButton}>Search</button>
+        </div>
 
         <div style={styles.summary}>
           Showing {filteredQueries.length} of {queries.length} total queries
