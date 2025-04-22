@@ -70,7 +70,7 @@ const RecentActivity = () => {
     outline: 'none',
     transition: 'all 0.3s ease',
     boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
-  }
+  },
       searchButton: {
   padding: '10px 18px',
   backgroundColor: '#007BFF',
@@ -81,7 +81,7 @@ const RecentActivity = () => {
   fontSize: '16px',
   transition: 'background-color 0.3s ease',
   boxShadow: '0 2px 5px rgba(0, 123, 255, 0.3)'
-}
+},
 
     table: {
       width: '100%',
