@@ -134,28 +134,35 @@ const UsersPage = () => {
   };
 
   // Update an existing user
-  const updateUser = async (userId) => {
-    try {
-      const res = await fetch(`${url}/users/${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-      });
-      if (!res.ok) throw new Error("Failed to update user");
-      await res.json();
-      setEditingUser(null);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        role: "",
-        password: ""
-      });
-      fetchUsers();
-    } catch (error) {
-      console.error(error);
+  // Update an existing user (without requiring password)
+const updateUser = async (userId) => {
+  try {
+    const updatedData = { ...formData };
+    if (!updatedData.password) {
+      delete updatedData.password; // Do not send password if not changed
     }
-  };
+
+    const res = await fetch(`${url}/users/${userId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedData)
+    });
+
+    if (!res.ok) throw new Error("Failed to update user");
+    await res.json();
+    setEditingUser(null);
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      role: "",
+      password: ""
+    });
+    fetchUsers();
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   // Delete a user
   const deleteUser = async (userId) => {
@@ -184,17 +191,16 @@ const UsersPage = () => {
 
   // Set the form for editing an existing user
   const handleEdit = (user) => {
-    setEditingUser(user);
-    setFormData({
-      firstName: user.firstName || "",
-      lastName: user.lastName || "",
-      email: user.email || "",
-      role: user.role || "",
-      password: "" // require re-entering password when editing
-    });
-    setIsCreating(true);
-  };
-
+  setEditingUser(user);
+  setFormData({
+    firstName: user.firstName || "",
+    lastName: user.lastName || "",
+    email: user.email || "",
+    role: user.role || "",
+    password: "" // Leave password blank when editing
+  });
+  setIsCreating(true);
+};
   // Reset form for new creation
   const handleNewUser = () => {
     setEditingUser(null);
@@ -270,16 +276,17 @@ const UsersPage = () => {
           />
           <label style={styles.label} htmlFor="password">
             Password:
-          </label>
-          <input
-            style={styles.input}
-            type="password"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+            </label>
+            <input
+              style={styles.input}
+              type="password"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder={editingUser ? "Leave blank to keep existing password" : ""}
+              required={!editingUser}
+            />
           <button
             style={{ ...styles.button, ...styles.editButton }}
             type="submit"
