@@ -272,7 +272,8 @@ import { ClipLoader } from 'react-spinners';
 
 // Base URL for API endpoints
 // const baseUrl = "https://meridian-backend-postdeployment-testing.onrender.com";
-const baseUrl = "https://adminguidedchatbot22-a7bdayd7a8bkcpca.eastus2-01.azurewebsites.net";
+// const baseUrl = "https://adminguidedchatbot22-a7bdayd7a8bkcpca.eastus2-01.azurewebsites.net";
+const baseUrl = "https://chatbotv25.onrender.com";
 
 const KnowledgeBasePage = () => {
   const [files, setFiles] = useState([]);
