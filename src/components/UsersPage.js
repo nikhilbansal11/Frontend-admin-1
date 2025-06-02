@@ -86,7 +86,8 @@ const UsersPage = () => {
   });
   const [isCreating, setIsCreating] = useState(false);
   // const url = "https://meridian-backend-postdeployment-testing.onrender.com";
-  const url = "https://adminguidedchatbot22-a7bdayd7a8bkcpca.eastus2-01.azurewebsites.net";
+  const url = "https://chatbotv25.onrender.com";
+  // const url = "https://adminguidedchatbot22-a7bdayd7a8bkcpca.eastus2-01.azurewebsites.net";
 
   // Fetch all users on component mount
   useEffect(() => {
